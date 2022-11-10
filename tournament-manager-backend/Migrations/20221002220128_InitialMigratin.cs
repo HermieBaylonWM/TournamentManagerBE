@@ -4,7 +4,7 @@
 
 namespace tournament_manager_backend.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class InitialMigratin : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -29,10 +29,10 @@ namespace tournament_manager_backend.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Opponent = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     WinnerScore = table.Column<int>(type: "int", nullable: false),
                     LosserScore = table.Column<int>(type: "int", nullable: false),
-                    PlayerId = table.Column<int>(type: "int", nullable: false)
+                    PlayerId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -41,8 +41,7 @@ namespace tournament_manager_backend.Migrations
                         name: "FK_LossRecords_Players_PlayerId",
                         column: x => x.PlayerId,
                         principalTable: "Players",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -51,7 +50,7 @@ namespace tournament_manager_backend.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Opponent = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     WinnerScore = table.Column<int>(type: "int", nullable: false),
                     LosserScore = table.Column<int>(type: "int", nullable: false),
                     PlayerId = table.Column<int>(type: "int", nullable: false)

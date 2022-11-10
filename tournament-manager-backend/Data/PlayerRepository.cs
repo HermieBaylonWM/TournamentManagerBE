@@ -16,7 +16,6 @@ namespace tournament_manager_backend.Data
         public Player Add(Player player)
         {
             _context.Players.Add(player);
-            //player.Id = await _context.SaveChangesAsync();
             _context.SaveChanges();
             return player;
         }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using tournament_manager_backend.Data;
 
@@ -11,9 +12,10 @@ using tournament_manager_backend.Data;
 namespace tournament_manager_backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221014162440_AddRecordTableOnContext")]
+    partial class AddRecordTableOnContext
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,7 +74,7 @@ namespace tournament_manager_backend.Migrations
                     b.ToTable("Players");
                 });
 
-            modelBuilder.Entity("tournament_manager_backend.Models.WinRecord", b =>
+            modelBuilder.Entity("tournament_manager_backend.Models.Record", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -96,6 +98,34 @@ namespace tournament_manager_backend.Migrations
 
                     b.HasIndex("PlayerId");
 
+                    b.ToTable("Records");
+                });
+
+            modelBuilder.Entity("tournament_manager_backend.Models.WinRecord", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("LosserScore")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Opponent")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PlayerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WinnerScore")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlayerId");
+
                     b.ToTable("WinRecords");
                 });
 
@@ -108,11 +138,22 @@ namespace tournament_manager_backend.Migrations
                     b.Navigation("Player");
                 });
 
+            modelBuilder.Entity("tournament_manager_backend.Models.Record", b =>
+                {
+                    b.HasOne("tournament_manager_backend.Models.Player", "Player")
+                        .WithMany()
+                        .HasForeignKey("PlayerId");
+
+                    b.Navigation("Player");
+                });
+
             modelBuilder.Entity("tournament_manager_backend.Models.WinRecord", b =>
                 {
                     b.HasOne("tournament_manager_backend.Models.Player", "Player")
                         .WithMany("Wins")
-                        .HasForeignKey("PlayerId");
+                        .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Player");
                 });

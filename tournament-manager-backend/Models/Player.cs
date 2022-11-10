@@ -6,7 +6,7 @@ namespace tournament_manager_backend.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int Power { get; set; }
+        public int Power { get; set; } // Skill Level (1, 2, 3, 4, etc)
         public int Rating { get; set; }
         public ICollection<WinRecord> Wins { get; set; }
         public ICollection<LossRecord> Losses { get; set; }

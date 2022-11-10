@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using tournament_manager_backend.Data;
 
@@ -11,9 +12,10 @@ using tournament_manager_backend.Data;
 namespace tournament_manager_backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221014211738_MakeOpponentNullable")]
+    partial class MakeOpponentNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,9 +86,10 @@ namespace tournament_manager_backend.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Opponent")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PlayerId")
+                    b.Property<int>("PlayerId")
                         .HasColumnType("int");
 
                     b.Property<int>("WinnerScore")
@@ -112,7 +115,9 @@ namespace tournament_manager_backend.Migrations
                 {
                     b.HasOne("tournament_manager_backend.Models.Player", "Player")
                         .WithMany("Wins")
-                        .HasForeignKey("PlayerId");
+                        .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Player");
                 });

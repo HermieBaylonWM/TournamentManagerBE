@@ -7,18 +7,17 @@ namespace tournament_manager_backend.Data
 {
     public class MatchRepository : IMatchRepository
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IRecordRepository _recordRepository;
 
-        public MatchRepository(ApplicationDbContext context)
+        public MatchRepository(IRecordRepository recordRepository)
         { 
-            _context = context;
+            _recordRepository = recordRepository;
         }
 
         public void AddMatchResult(WinRecord winner, LossRecord loser)
         {
-            _context.WinRecords.Add(winner);
-            _context.LossRecords.Add(loser);
-            _context.SaveChanges();
+            _recordRepository.AddWinRecord(winner);
+            _recordRepository.AddLossRecord(loser);
         }
     }
 }
