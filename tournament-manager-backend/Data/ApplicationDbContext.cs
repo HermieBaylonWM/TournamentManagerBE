@@ -24,6 +24,7 @@ namespace tournament_manager_backend.Data
             modelBuilder.Entity<Player>()
                 .HasMany(p => p.Losses)
                 .WithOne(w => w.Player);
+
         }
     }
 }

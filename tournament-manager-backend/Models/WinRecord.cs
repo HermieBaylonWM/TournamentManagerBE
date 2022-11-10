@@ -3,9 +3,9 @@
     public class WinRecord
     {
         public int Id { get; set; }
-        public string Opponent { get; set; }
+        public string? Opponent { get; set; }
         public int WinnerScore { get; set; }
         public int LosserScore { get; set; }
-        public Player Player { get; set; }
+        public Player? Player { get; set; }
     }
 }

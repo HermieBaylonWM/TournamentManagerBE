@@ -10,11 +10,13 @@ namespace tournament_manager_backend.Controllers
     [ApiController]
     public class PlayerController : ControllerBase
     {
-        private readonly IPlayerRepository _repository;
+        private readonly IPlayerRepository _playerRepository;
+        private readonly IRecordRepository _recordRepository;
 
-        public PlayerController(IPlayerRepository repository)
-        { 
-            _repository = repository;
+        public PlayerController(IPlayerRepository playerRepository, IRecordRepository recordRepository)
+        {
+            _playerRepository = playerRepository;
+            _recordRepository = recordRepository;
         }
 
         // api/addplayer
@@ -26,7 +28,7 @@ namespace tournament_manager_backend.Controllers
                 Name = dto.Name,
                 Power = dto.Power
             };
-            _repository.Add(player);
+            _playerRepository.Add(player);
         }
 
         [HttpGet("GetPlayerById/{id}")]
@@ -36,7 +38,7 @@ namespace tournament_manager_backend.Controllers
             {
                 throw new ArgumentException("id must be a positive number");
             }
-            var player = _repository.GetById(id);
+            var player = _playerRepository.GetById(id);
             if (player == null)
             {
                 throw new NullReferenceException("Player with id: "+id+" does not exist");
@@ -47,7 +49,7 @@ namespace tournament_manager_backend.Controllers
         [HttpGet("GetAllPlayers")]
         public IEnumerable<Player> GetAllPlayers()
         {
-            return _repository.GetAll();
+            return _playerRepository.GetAll();
         }
 
         [HttpGet("GetMock")]
@@ -61,10 +63,9 @@ namespace tournament_manager_backend.Controllers
         {
             if (id < 0)
             {
-                //throw new ArgumentOutOfRangeException("id must be a positive number");
                 throw new ArgumentException("id must be a positive number");
             }
-            _repository.Delete(id);
+            _playerRepository.Delete(id);
         }
 
         [HttpPut("UpdatePlayerRating/{id}")]
@@ -74,7 +75,7 @@ namespace tournament_manager_backend.Controllers
             {
                 throw new ArgumentException("id must be a positive number");
             }
-            _repository.UpdateRating(id, 2000);
+            _playerRepository.UpdateRating(id, 2000);//testing
         }
 
         [HttpPut("UpdatePlayer/{id}/{newName}/{newPower}")]
@@ -84,7 +85,7 @@ namespace tournament_manager_backend.Controllers
             {
                 throw new ArgumentException("id must be a positive number");
             }
-            _repository.UpdatePlayer(id, newName, newPower);
+            _playerRepository.UpdatePlayer(id, newName, newPower);
         }
     }
 }

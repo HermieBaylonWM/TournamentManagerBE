@@ -9,3 +9,5 @@
         public Player? Player { get; set; }
     }
 }
+
+// Player? is here for construction
